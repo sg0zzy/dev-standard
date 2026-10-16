@@ -10,6 +10,7 @@ Repository-owned instructions:
 - Local builds, checks and host capabilities: `<DOCUMENT_AND_COMMANDS>`.
 - Build matrix and package verification: `<DOCUMENT_OR_CONFIG>`.
 - Local artifact cleanup dry-run and protection: `<DOCUMENT_AND_COMMANDS>`.
+- Git exclusions: apply the pinned snapshot's ARTIFACTS.md Git exclusions in the root `.gitignore`; verify effective ignore behavior and absence of tracked files in the excluded directories.
 - Beta, stable preparation and recovery: `<DOCUMENT_AND_COMMANDS>`.
 - Distribution matrix, signing identities and authorization: `<DOCUMENT_OR_CONFIG>`.
 - Architecture choices, data recovery and applicable technology-preference rationale: `<DOCUMENT>`; apply the pinned snapshot's ARCHITECTURE.md without introducing frameworks or rewriting working code solely for standardization.

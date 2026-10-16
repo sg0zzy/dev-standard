@@ -1,1 +1,5 @@
 /local_artifacts/
+node_modules/
+dist/
+__pycache__/
+target/

@@ -43,6 +43,7 @@ These cases distinguish mandatory safeguards from recommended design/stack choic
 | L12 | Build is interrupted; partial state remains | Run future automatic collection | Interrupted directory remains excluded; explicit recovery available | Automatic deletion or false success |
 | L13 | Inputs can change during compilation | Modify used input during a local build | Captured snapshot remains consistent or build detects/fails change | Manifest describes inputs other than those compiled |
 | L14 | Multi-platform local selection has one failed mandatory target | Finish build | Failed status and per-target results; partial artifacts identified; no retention | Partial output marked complete or failed target hidden |
+| L15 | Root `.gitignore` and Git index available; isolated fixture includes root `local_artifacts/` and root/nested `node_modules/`, `dist/`, `__pycache__/`, `target/` files, including an already-tracked file | Inspect required patterns under [ARTIFACTS.md](ARTIFACTS.md#git-exclusions), run `git check-ignore --no-index` on fixture paths, and inspect `git ls-files`; apply adoption remediation to the tracked fixture file | All required patterns present; every fixture path effectively ignored; excluded files absent from index after remediation and local bytes preserved | Missing pattern, negation re-includes contents, excluded file remains tracked, or remediation deletes local bytes |
 
 ## Versions and ordinary CI
 

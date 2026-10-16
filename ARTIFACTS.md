@@ -2,7 +2,7 @@
 
 ## Local layout and state
 
-All final local build artifacts MUST be collected under `local_artifacts/` at the project root. Projects MUST ignore `/local_artifacts/` in Git and MUST exclude it from source snapshots. Each invocation MUST reserve a unique direct child directory using exclusive creation. A directory MAY hold multiple platforms. Staging outside this root MAY be used for tool intermediates; final local output belongs here.
+All final local build artifacts MUST be collected under `local_artifacts/` at the project root. Projects MUST exclude it from source snapshots and apply the [Git exclusions](#git-exclusions) below. Each invocation MUST reserve a unique direct child directory using exclusive creation. A directory MAY hold multiple platforms. Staging outside this root MAY be used for tool intermediates; final local output belongs here.
 
 ```text
 local_artifacts/
@@ -16,6 +16,20 @@ local_artifacts/
 ```
 
 A managed build MUST have explicit `in_progress`, `succeeded` or `failed` state, unique build ID and a schema/manager marker. Completion metadata MUST be committed atomically only after artifacts and their verification are complete. A crash or lost process MUST NOT cause an in-progress directory to become collectible automatically; recovery is a separate explicit inspection. Completed artifacts MUST NOT be overwritten by subsequent builds. Retention below is an explicit, bounded deletion policy, not an overwrite exception.
+
+## Git exclusions
+
+Each project's root `.gitignore` MUST include the following directory patterns. `/local_artifacts/` applies at the project root; the other patterns exclude dependency, cache and build-output directories at any depth. Effective ignore rules MUST NOT re-include their contents, and files under these directories MUST NOT remain tracked.
+
+```gitignore
+/local_artifacts/
+node_modules/
+dist/
+__pycache__/
+target/
+```
+
+Adding an ignore pattern does not untrack existing files. Adoption MUST check the Git index and remove any already-tracked files in these directories from the index while preserving local files. Git ignore status alone does not define source snapshot scope: relevant ignored inputs remain subject to the [metadata contract](#metadata-contract).
 
 ## Metadata contract
 
