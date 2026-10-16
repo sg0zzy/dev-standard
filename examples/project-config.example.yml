@@ -1,0 +1,180 @@
+# Illustrative contract, not input to a shared parser. Replace placeholders before adoption.
+schema_version: 1
+project:
+  id: sample-app
+  name: Sample App
+  repository: https://github.com/OWNER/REPOSITORY
+standards:
+  edition: 1.0.0
+  repository: https://github.com/OWNER/dev-standards
+  commit: REPLACE_WITH_FULL_IMMUTABLE_COMMIT
+  snapshot: docs/dev-standards/
+  snapshot_inventory: docs/dev-standards.sha256
+version:
+  authority: app/version.properties
+  field: app.version
+  read_update_mapping: docs/development.md#version-metadata
+  development_base:
+    source: project-native next-core setting
+    location: docs/development.md#next-core
+  package_mapping: docs/packaging.md#version-fields
+operations:
+  local_build: docs/development.md#local-build
+  checks: docs/development.md#checks
+  release_prepare: docs/releasing.md#prepare
+  release_recovery: docs/releasing.md#recovery
+  cleanup: docs/development.md#cleanup
+  protect_build: docs/development.md#protect
+targets:
+  android-debug:
+    platform: android
+    architecture: universal
+    package: apk
+    signing: debug
+  android-apk:
+    platform: android
+    architecture: universal
+    package: apk
+    signing: android-release
+  android-aab:
+    platform: android
+    architecture: multi
+    package: aab
+    signing: play-upload
+  linux-x86_64:
+    platform: linux
+    architecture: x86_64
+    package: AppImage
+    signing: checksum-only
+  windows-x64:
+    platform: windows
+    architecture: x64
+    package: exe-installer
+    signing: windows-release
+build_matrix:
+  local:
+    mandatory: [android-debug, linux-x86_64]
+    optional: []
+    host_capabilities: docs/development.md#linux-host
+  ci:
+    mandatory: [android-debug, linux-x86_64, windows-x64]
+    optional: []
+  beta:
+    mandatory: [android-apk, linux-x86_64, windows-x64]
+    optional: []
+  stable:
+    mandatory: [android-apk, android-aab, linux-x86_64, windows-x64]
+    optional: []
+validation:
+  required_checks: [unit-tests, static-analysis, package-integrity]
+  package_verification: docs/packaging.md#verification
+  exclusions: []
+local_artifacts:
+  root: local_artifacts/
+  ignored_by_git: true
+  manager: sample-app-local-builds
+  manifest_schema: 1
+  retain_successful_unprotected: 10 # Omission defaults to 10; explicit override permitted.
+  ordering: locked-completion-sequence
+  source_identity: canonical-input-snapshot-sha256
+ci:
+  primary_branch: main
+  events: [push, pull_request]
+  pr_revision: proposed-merge
+  temporary_artifact_retention_days: 14
+releases:
+  coordination: docs/releasing.md#repository-wide-reservation-and-publication-lock
+  reservation_records: remote-official-tags-and-audited-ledger
+  beta:
+    workflow_name: Beta Release
+    event: workflow_dispatch
+    default_source: main
+    tag_pattern: vMAJOR.MINOR.PATCH-dev.N
+    prerelease: true
+    make_latest: false
+  stable:
+    initiation: explicit-developer-selection
+    build_event: stable-tag-push
+    tag_pattern: vMAJOR.MINOR.PATCH
+    annotated_tag: true
+    prerelease: false
+  notes_baseline: previous-successfully-published-stable-tag
+  staging: draft-github-release
+signing:
+  debug:
+    kind: test-only
+    production_credentials: false
+  android-release:
+    required_for_release: true
+    environment: release-signing
+    credential_reference: secret-reference-only
+    certificate_inventory: docs/signing.md#android-apk
+  play-upload:
+    required_for_release: true
+    environment: release-signing
+    credential_reference: secret-reference-only
+    certificate_inventory: docs/signing.md#play-upload-and-app-signing
+  checksum-only:
+    rationale: No native Linux signing requirement adopted; SHA-256 release checksums required.
+  windows-release:
+    required_for_release: true
+    production_credentials_in_ci: false
+    ci_profile: explicitly-test-only-unsigned-installer
+    environment: release-signing
+    credential_reference: secret-reference-only
+    certificate_inventory: docs/signing.md#windows
+android:
+  production_application_id: org.example.sample
+  debug_application_id: org.example.sample.debug
+  code_strategy: durable-monotonic-sequence
+  code_domain: sample-production
+  code_ledger: repository-owned-durable-release-ledger
+  play_max_code: 2100000000
+  promised_updates:
+    - github-beta-to-github-beta
+    - github-beta-to-github-stable
+    - github-stable-to-github-stable
+    - play-stable-to-play-stable
+  cross_github_play_updates: unsupported-until-installed-certificate-verification
+distribution_matrix:
+  - destination: github-release
+    platform: all-declared-release-targets
+    channels: [beta, stable]
+    mode: automatic # Only following authorized dispatch/tag; not ordinary CI.
+    artifacts: successful-selected-release-targets-plus-manifest-and-checksums
+    success: visible-release-with-all-mandatory-assets
+    retry_identity: tag-and-manifest-sha256
+  - destination: google-play
+    platform: android
+    channels: [stable]
+    mode: manual
+    artifacts: [android-aab]
+    success: declared-production-rollout-complete
+    credentials: human-managed-console
+    retry_identity: application-id-versionCode-and-aab-sha256
+  - destination: google-play
+    platform: android
+    channels: [beta]
+    mode: disabled
+    artifacts: []
+  - destination: project-website
+    platform: linux
+    architecture: x86_64
+    channels: [stable]
+    mode: approval
+    artifacts: [linux-x86_64]
+    environment: website-production
+    credentials: website-deploy-secret-reference
+    success: verified-versioned-download-live
+    retry_identity: version-target-sha256
+  - destination: microsoft-store
+    platform: windows
+    channels: [beta, stable]
+    mode: disabled
+    artifacts: []
+authorization:
+  adoption_record: DEVELOPMENT_STANDARDS.md
+  github_release: explicit-dispatch-or-stable-tag-push
+  website: explicit-artifact-bound-environment-approval
+  new_destinations: require-explicit-developer-authorization
+overrides: []

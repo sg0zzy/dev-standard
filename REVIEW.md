@@ -1,0 +1,52 @@
+# Initial standards review
+
+This report covers creation of the documentation set in the initially empty workspace. It is not evidence that any application complies, and no standards Git commit/tag exists yet.
+
+## Deliverables
+
+Created `.gitignore`; `README.md`, `AGENTS.md`, `VERSIONING.md`, `BUILD.md`, `ARTIFACTS.md`, `RELEASE.md`, `ANDROID.md`, `DISTRIBUTION.md`, `SECURITY.md`, `CONFIGURATION.md`, `ADOPTION.md`, `COMPLIANCE.md`, and this report; examples `project-config.example.yml`, `github-actions-patterns.md`, `android-versioning.md`, `release-scenarios.md`; templates `AGENTS.project.md` and `DEVELOPMENT_STANDARDS.md`.
+
+The policies standardize observable behavior and acceptance gates while leaving native tooling independent. They separate source/build identity, temporary CI output, immutable official releases, platform signing/update rules and per-destination delivery. Adoption is explicit, pinned, verifiable and migratable.
+
+## Decisions and consistency review
+
+| Concern | Resolution |
+| --- | --- |
+| Normative flexibility | MUST is mandatory; SHOULD deviations need justification; MAY is optional. Explicit retention overrides remain compliant. Other unmet MUSTs remain visible gaps. |
+| Version progression | One repository-wide official stream; full SemVer precedence, independent local IDs, permanent failed reservations and publication revalidation. Skipped cores are not backfilled. |
+| Concurrency | Atomic create-only tags plus common allocation/publication coordination; no reliance on workflow-local locks or scheduling order alone. |
+| Artifact preservation | Unique local output, dirty-source snapshot identity and coherent source capture; bounded retention is explicit deletion, never overwrite. |
+| Cleanup safety | Completion sequence, `.keep`, locking, containment/ownership checks and skip-on-uncertainty; failure never triggers retention. |
+| Build versus delivery | Independent matrices and channels. Building a target never enables a store. Distribution consumes verified outputs, with only documented platform exceptions. |
+| Incomplete releases | Staging and mandatory aggregate gate; failed tags remain reserved. No public success from partial packaging. |
+| Android | Durable monotonic codes per update domain; real ID/certificate and device validation; upload/app-signing keys distinguished. |
+| Security/agents | Local implementation authority does not imply remote publication authority. Existing scoped authorization is honored; secrets and write privileges stay out of untrusted jobs. |
+| Notes | Previous successful stable Git range, with merge/cherry-pick review and generated-entry handling. |
+| Platform assumptions | Only declared targets apply. Signing profiles and destination success criteria are project-specific; no guarantee of store acceptance. |
+| Shared infrastructure | Documentation, illustrative YAML and templates only; no shared executable scripts or workflows. |
+
+## Validation performed
+
+Relative documentation links and anchors, fenced YAML syntax, example target/signing references, acceptance-case structure/IDs and SemVer transition/code-boundary examples were checked locally. The set was reviewed against the requested scopes and scenarios, including race/failure recovery and configurable defaults. Current official SemVer, Android and GitHub documentation was consulted and linked next to platform claims. No application build, device upgrade, live publication or external delivery was performed; those remain adopting-project acceptance work.
+
+Initial local audit: 20 files (18 Markdown documents, one YAML example, one `.gitignore`); 66 relative links/anchors resolved; six YAML documents parsed (the configuration and five fenced fragments); all 57 acceptance cases have unique IDs and all four required test fields. Matrix, artifact and signing references resolve. SemVer examples were checked using temporary audit-only tooling, with no installed project dependency. The output inventory contains no executable build scripts or active workflows.
+
+## Architecture extension review
+
+Added `ARCHITECTURE.md`; updated `README.md`, `AGENTS.md`, `COMPLIANCE.md`, `ADOPTION.md`, both project templates and this report. The extension separates architecture behavior from conditional SHOULD-level technology preferences, covers local/offline operation, privacy, platform integration, simplicity, portable data, export/backup and synchronization/migration recovery, and explicitly prohibits standardization-only rewrites/framework additions. Illustrative selection decisions demonstrate lightweight adoption and justified alternatives.
+
+Impact: adopting this policy adds applicable data-recovery/privacy safeguards and architecture review cases R01–R12. Stack choices remain project-owned, unsupported features remain out of scope, and justified alternative technologies remain compliant. No architecture choice adds build targets, distribution authority, a shared implementation or a required service. Existing adoptions would remain pinned until an explicit migration. Edition 1.0.0 is retained as the initial unpublished baseline in this workspace, which still has no standards Git commit/tag; this is not a silent change to a published edition.
+
+Extension validation: 21 files, 19 Markdown documents, 77 resolved relative links/anchors, six parsed YAML documents and 69 complete uniquely identified acceptance cases. Official Tauri, Android, Mozilla, React, RxDB and W3C documentation is linked beside relevant technology guidance. No application architecture, device behavior or synchronization implementation was tested; those checks belong in adopting repositories. No executable dependencies, frameworks, services or remote changes were introduced. No unresolved central architecture policy questions remain; feasibility, stack selection and data-specific recovery design remain project decisions.
+
+## Adoption decisions still needed
+
+There are no deferred central policy choices required to use the contracts. Before claiming adoption, a project must select the real immutable standards commit and fill its own version authority, supported targets, mandatory gates, credentials/certificate inventories, Android domain/history if relevant, overrides, distribution modes and developer-approved remote authority. The standards repository's canonical remote URL and immutable commit remain unspecified in this workspace; template placeholders intentionally require them. Multi-stream maintenance releases are outside the chosen single-stream policy and need an explicit future policy change if required.
+
+## PhoneHaul and pboard
+
+Neither external repository was inspected or changed. [ADOPTION.md](ADOPTION.md#phonehaul-and-pboard) describes conditional onboarding. PhoneHaul should first inventory its actual platforms and, if applicable, Android IDs/keys/codes and update promises. pboard should first identify its actual packaging targets and host constraints. Both can pin a verified snapshot, map native tooling, implement local preservation/CI/staged releases and test applicable cases. Neither needs a shared executable dependency, and store delivery starts disabled/manual until configured.
+
+## Example agent prompt
+
+> Bring this repository into compliance with dev-standards edition 1.0.0 at `<FULL_IMMUTABLE_COMMIT>`. Inspect existing version/signing history and native tooling; create a verified local policy snapshot and explicit adoption record. Implement applicable local builds, artifact metadata/retention, CI, staged beta/stable release gates and independent distribution configuration using this repository's tools. Run applicable COMPLIANCE.md cases and report evidence, justified overrides and remaining gaps. Preserve existing user work, tags, package-code history and signing identities. Do not push, create remote tags, upload secrets, publish or deploy; leave remote changes reviewable for authorization.
