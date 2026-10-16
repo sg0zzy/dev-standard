@@ -19,7 +19,7 @@ A configurable default means projects MUST apply that value when no explicit val
 | Document | Owns |
 | --- | --- |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture principles, conditional technology preferences and selection flexibility |
-| [VERSIONING.md](VERSIONING.md) | Application identities, ordering, allocation constraints |
+| [VERSIONING.md](VERSIONING.md) | Declared versions, explicit bumps, generated identities, ordering and allocation constraints |
 | [BUILD.md](BUILD.md) | Local/CI behavior and build matrix |
 | [ARTIFACTS.md](ARTIFACTS.md) | Manifests, preservation, retention and cleanup |
 | [RELEASE.md](RELEASE.md) | Beta/stable state machines, notes and recovery |
@@ -41,7 +41,7 @@ The [initial review report](REVIEW.md) records deliverables, decisions, validati
 | --- | --- |
 | Application version | SemVer product identity; platform package fields may require a documented mapping |
 | Build identity | A particular execution and its source/environment; multiple builds can share a commit |
-| Git tag | Immutable official version-to-commit reservation; not proof of successful packaging |
+| Official remote Git tag | Immutable official version-to-commit reservation; not proof of successful packaging |
 | Actions artifact | Temporary workflow output, not an official release asset |
 | Release asset | Verified file attached to a completed GitHub Release |
 | External distribution | A separate delivery operation to a store, site or host |

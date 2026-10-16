@@ -6,7 +6,8 @@ This repository adopts dev-standards edition `<EDITION>` at immutable commit `<F
 
 Repository-owned instructions:
 
-- Version authority and development base: `<PATH_AND_FIELDS>`.
+- Version authority, declared development state and platform metadata: `<PATH_AND_FIELDS>`.
+- Explicit version bump, dry-run and recovery: `<DOCUMENT_AND_COMMANDS>`; use this existing mechanism rather than manually editing multiple version files, following the pinned VERSIONING.md.
 - Local builds, checks and host capabilities: `<DOCUMENT_AND_COMMANDS>`.
 - Build matrix and package verification: `<DOCUMENT_OR_CONFIG>`.
 - Local artifact cleanup dry-run and protection: `<DOCUMENT_AND_COMMANDS>`.
@@ -17,6 +18,6 @@ Repository-owned instructions:
 
 Keep all implementations in this repository's own tooling. Local builds must accept dirty sources, preserve distinct artifacts and remain local. Ordinary CI must not release or deploy. Build selection must not imply destination selection. Apply MUST/SHOULD/MAY and configurable defaults from the adopted policies; record justified SHOULD departures and report MUST gaps.
 
-Agents may inspect, edit and locally validate requested infrastructure work. Do not push, create remote tags, upload secrets, publish or deploy without explicit authorization covering the operation. Local commits/tags require release preparation to be in task scope. Existing authorized instructions remain effective; do not request authorization again unnecessarily. A configuration mode or available credential is not by itself authorization. Never move a published tag, silently replace official assets, generate replacement production keys, or expose secrets.
+Agents may inspect, edit and locally validate requested infrastructure work. Do not push, create remote tags, upload secrets, publish or deploy without explicit authorization covering the operation. Bumps and their metadata-only local commits require an explicit developer request under the pinned VERSIONING.md and SECURITY.md; feature/bug-fix completion or a local build does not authorize them. Bump-and-commit authorization does not authorize tags, pushes or releases. Local release commits/tags require release preparation to be in task scope. Existing authorized instructions remain effective; do not request authorization again unnecessarily. A configuration mode or available credential is not by itself authorization. Never move a published tag, silently replace official assets, generate replacement production keys, or expose secrets.
 
 Before declaring compliance, run applicable acceptance cases and record evidence in `<EVIDENCE_PATH>`. Exceptions and partial adoption status are recorded in DEVELOPMENT_STANDARDS.md. Do not upgrade the standards pin or enable additional destinations silently.

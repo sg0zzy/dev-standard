@@ -26,7 +26,7 @@ Signing/notarization services used only to obtain a final package are distinct f
 
 ## Local procedure
 
-Each project MUST document prerequisites, available host capabilities, target selection, commands, output paths, and failure reporting. Unsupported host/target combinations MUST fail clearly or be explicitly excluded before building. Local builds MUST work with uncommitted changes and MUST NOT require creating a commit. They MUST NOT automatically push, tag, publish or distribute, and MUST NOT alter the stable project version. Native tool-generated transient files MAY change if documented.
+Each project MUST document prerequisites, available host capabilities, target selection, commands, output paths, and failure reporting. Unsupported host/target combinations MUST fail clearly or be explicitly excluded before building. Local builds MUST work with uncommitted changes and MUST NOT require creating a commit. They MUST NOT automatically push, tag, publish or distribute. Version derivation and metadata preservation follow [VERSIONING.md](VERSIONING.md#generated-identifiers-and-counters). Native tool-generated transient files MAY change if documented.
 
 Each completed build MUST preserve its final artifacts in its own `local_artifacts/` directory under [ARTIFACTS.md](ARTIFACTS.md), subject only to documented retention/manual deletion. No implicit overwrite is permitted. All mandatory selected targets and manifest verification MUST succeed before a build is marked successful. Failed multi-target builds MUST record partial outcomes and MUST NOT trigger retention.
 
@@ -54,7 +54,7 @@ Ordinary CI MUST:
 4. Verify generated packages, record source/run identity, and upload successful packages as temporary GitHub Actions artifacts. On failure, diagnostic/partial artifacts MAY be uploaded but MUST be labeled incomplete.
 5. Report job and aggregate failure accurately, including mandatory matrix failures even if other jobs succeed.
 
-CI MUST NOT increment stable versions, create official tags or GitHub Releases, or deploy externally. It MUST NOT require production signing secrets for untrusted PRs. Debug or otherwise test-only packages MUST be labeled accordingly. CI identities MAY be native run IDs or local-style identifiers, but MUST NOT consume beta N or Android production codes merely for compilation.
+CI MUST NOT bump declared project versions (see [VERSIONING.md](VERSIONING.md#independent-operations)), create official tags or GitHub Releases, or deploy externally. It MUST NOT require production signing secrets for untrusted PRs. Debug or otherwise test-only packages MUST be labeled accordingly. CI identities MAY be native run IDs or local-style identifiers, but MUST NOT consume beta N or Android production codes merely for compilation.
 
 Temporary artifact names SHOULD include project, target, source SHA, run ID and attempt. Their retention SHOULD be explicit, with 14 days the recommended default subject to hosting limits. Upload failure for mandatory expected CI output MUST fail the CI output gate. Actions artifacts are temporary transport/storage; their presence MUST NOT imply official publication. See [GitHub workflow artifacts](https://docs.github.com/en/actions/tutorials/store-and-share-data).
 

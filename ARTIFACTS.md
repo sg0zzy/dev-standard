@@ -35,7 +35,7 @@ Adding an ignore pattern does not untrack existing files. Adoption MUST check th
 
 Every successful local directory MUST contain a manifest (recommended filename `build-info.json`). Failed/in-progress builds MUST retain enough state for cleanup to exclude them. The manifest MUST record:
 
-- Manifest schema and manager identity, unique build ID, product version, development core, channel, state, UTC start/completion timestamps and a durable completion sequence used for retention.
+- Manifest schema and manager identity, unique build ID, declared repository version, effective product version (including any build-time override), core, channel, state, UTC start/completion timestamps and a durable completion sequence used for retention.
 - Full Git commit SHA, dirty indicator, submodule source identities where used, and a source snapshot digest plus algorithm and scope description. A SHA alone identifies committed history, not dirty source.
 - The scope MUST cover tracked modifications/deletions, relevant untracked files and every other source/configuration input used, including relevant ignored inputs. Use a canonical path/content inventory or equivalent snapshot hash; document exclusions such as secrets, caches and outputs. Secret contents MUST NOT be copied into the manifest or snapshot archive; record nonsecret dependency/key identifiers where needed. Different effective dirty sources MUST have different recorded identities.
 - Build environment: OS/architecture, compiler/runtime/SDK/build tool versions, dependency lock identity and relevant options. Container image digest SHOULD be included when used. Avoid usernames, absolute private paths and secret environment values.

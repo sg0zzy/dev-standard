@@ -4,7 +4,7 @@ These examples illustrate the contracts; commands are placeholders for repositor
 
 ## 1. Local build without committing
 
-Stable authority remains 0.9.4; next development core is 0.9.5. The developer modifies tracked code and adds an input file without committing. `<project-tool> build --local` snapshots those inputs and creates `local_artifacts/0.9.5-local.1/`. Its manifest records full HEAD, `dirty: true`, snapshot SHA-256/scope, unique build ID, environment, target outcomes and completion order. A second modification/build produces another directory and digest even with the same Git SHA. No tag/push/publication occurs. Successful completion collects only validated eligible old builds; a failed build collects nothing. Cases L01–L14.
+After stable 0.9.4, an explicitly requested patch bump commits only version metadata declaring 0.9.5-dev.0. The bump creates no tag or release. A dry-run first previews this change without modifying state; dirty-tree refusal and recovery are covered by cases U01–U09. The last published stable remains 0.9.4. The developer modifies tracked code and adds an input file without committing. `<project-tool> build --local` snapshots those inputs and creates `local_artifacts/0.9.5-local.1/`. Its manifest records full HEAD, `dirty: true`, snapshot SHA-256/scope, unique build ID, environment, target outcomes and completion order. A second modification/build produces another directory and digest even with the same Git SHA. The declaration remains 0.9.5-dev.0; no commit/tag/push/publication occurs and no beta counter is consumed. Successful completion collects only validated eligible old builds; a failed build collects nothing. Cases L01–L14.
 
 ## 2. Push to main
 
@@ -16,15 +16,15 @@ A fork PR targets main. The project tests GitHub's proposed merge revision M, re
 
 ## 4. Manually publish several betas
 
-The developer dispatches Beta Release against main. It resolves committed source A, reserves `v0.9.5-dev.1`, packages all mandatory targets, verifies signatures/checksums and publishes a prerelease with latest disabled. A second dispatch against committed B reserves `v0.9.5-dev.2`. Concurrent requests serialize/revalidate; they cannot both allocate dev.2. GitHub output is official Release assets; no external store entry is enabled merely by beta publication. Cases B01–B03.
+With committed declaration 0.9.5-dev.0, the developer dispatches Beta Release against main. It resolves committed source A, reserves `v0.9.5-dev.1`, packages all mandatory targets, verifies signatures/checksums and publishes a prerelease with latest disabled. A second dispatch against committed B reserves `v0.9.5-dev.2`. Concurrent requests serialize/revalidate; they cannot both allocate dev.2. Both dispatches leave the declaration at 0.9.5-dev.0 and do not change local counters; a following local build uses its next local N. GitHub output is official Release assets; no external store entry is enabled merely by beta publication. Cases B01–B03.
 
 ## 5. Skip a development version
 
-After dev.2, the developer changes the development base to 0.9.6 and records that stable 0.9.5 was skipped. The next reservation is `v0.9.6-dev.1`, greater than every 0.9.5 prerelease. N restarts for the new core but local numbering is independent. A later proposal to publish 0.9.5 stable fails the global high-water rule. No synthetic stable 0.9.5 release is created. Cases V02–V03.
+After dev.2, the developer explicitly requests a patch bump, commits 0.9.6-dev.0 through that operation, and records that stable 0.9.5 was skipped. The next reservation is `v0.9.6-dev.1`, greater than every 0.9.5 prerelease. N restarts for the new core but local numbering is independent. A later proposal to publish 0.9.5 stable fails the global high-water rule. No synthetic stable 0.9.5 release is created. Cases V02–V03.
 
 ## 6. Stable after multiple betas
 
-The developer explicitly selects 0.9.7. A local dry-run reports version edits, validation, commit/tag plan and requested remote actions. Authorized preparation records authoritative 0.9.7 in the intended commit and makes annotated `v0.9.7`. A separately authorized push triggers stable packaging from that commit. Notes cover **v0.9.4..v0.9.7**, including changes carried through all betas; no assumption is made that the latest beta contains the entire stable changelog range. After mandatory packages, manifest, checksums and uploads pass, the draft becomes stable. Next local development can use 0.9.8-local.1. Cases S01–S05.
+The developer explicitly selects 0.9.7. A local dry-run reports version edits, validation, commit/tag plan and requested remote actions. Authorized preparation records authoritative 0.9.7 in the intended commit and makes annotated `v0.9.7`. A separately authorized push triggers stable packaging from that commit. Notes cover **v0.9.4..v0.9.7**, including changes carried through all betas; no assumption is made that the latest beta contains the entire stable changelog range. After mandatory packages, manifest, checksums and uploads pass, the draft becomes stable. The repository remains at 0.9.7 after publication. Only a later explicit patch bump commits 0.9.8-dev.0, after which a local build can produce 0.9.8-local.1. See the complete state table in [VERSIONING.md](../VERSIONING.md#skipping-and-transitions) and cases V02, V04–V06. Cases S01–S05.
 
 ## 7. Failed Windows build blocks release
 

@@ -14,11 +14,19 @@ version:
   authority: app/version.properties
   field: app.version
   read_update_mapping: docs/development.md#version-metadata
-  development_base:
-    source: project-native next-core setting
-    location: docs/development.md#next-core
+  development_state:
+    source: authoritative app.version field; MAJOR.MINOR.PATCH-dev.0 after explicit bump
+    mapping: docs/development.md#development-state
+  local_counter:
+    storage: repository-owned-local-state-outside-artifact-retention
+    scope: per-core-and-shared-artifact-storage
+    recovery: docs/development.md#local-counter-recovery
+  beta_counter: github-release-workflow-remote-reservations
   package_mapping: docs/packaging.md#version-fields
 operations:
+  version_bump: docs/development.md#explicit-version-bump
+  bump_dry_run: docs/development.md#bump-dry-run
+  bump_recovery: docs/development.md#bump-recovery
   local_build: docs/development.md#local-build
   checks: docs/development.md#checks
   release_prepare: docs/releasing.md#prepare

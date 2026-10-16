@@ -49,6 +49,8 @@ permissions:
 
 GitHub requires the dispatchable workflow to exist on the default branch for `workflow_dispatch` triggering. The workflow ref selected in the UI and the application's `source` input are different concepts. Use a trusted workflow definition; resolve the input once, validate that commit's trust, then pass the immutable resolved SHA between jobs. Do not interpolate untrusted inputs directly into shell code; pass them through safe environment/argument handling and validate ref syntax. See [workflow events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
+The selected source declares `MAJOR.MINOR.PATCH-dev.0`; the allocator supplies the package override `MAJOR.MINOR.PATCH-dev.N` without editing that declaration or committing generated metadata. The beta tag points to the selected source SHA, and the manifest records the declared and effective product versions.
+
 The project adds a narrowly privileged reservation job, read-only compilation jobs, controlled signing, an aggregate mandatory-output gate, draft asset upload, notes and checksums, and a trusted final publication job. Only the jobs creating tags/releases need the corresponding write permissions. The final beta API operation explicitly sets `prerelease: true`, `make_latest: false` and transitions the fully verified draft to visible. Store delivery is a separate job/workflow governed by the distribution matrix.
 
 ## Coordination fragment

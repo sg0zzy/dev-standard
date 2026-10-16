@@ -9,17 +9,17 @@ Projects SHOULD describe their adoption in declarative configuration such as [pr
 | Identity | Project name/ID and repository location |
 | Standards | Edition, exact immutable commit, verified snapshot location/integrity |
 | Application version | One authoritative native source and read/update mapping; no duplicated editable version |
-| Development base | How the next core is selected/derived, separate from stable authority |
+| Development state | Declared version and derived core under [VERSIONING.md](VERSIONING.md#forms); local and beta counter scopes/storage mapped separately |
 | Build matrix | Target definitions and per-context mandatory/optional selections; host capabilities |
 | Validation | Required checks, documented exclusions, package verification gates |
-| Local storage | Root, retention override/default, manager/schema and cleanup/protection interface |
+| Local storage | Root, retention override/default, manager/schema, cleanup/protection interface and local counter scope/durable recovery mapping |
 | CI | Branch, PR revision policy, artifacts and retention |
 | Releases | Beta dispatch, stable tag pattern, common allocation/publication coordination, notes baseline |
 | Signing | Per-target profile, requiredness, nonsecret certificate/credential references |
 | Android | Application IDs, update edges, numeric allocation domain/ledger and bounds if applicable |
 | Distribution | Per-destination/platform/channel/artifact modes and success/retry criteria |
 | Authorization | Explicit adopted automation scope and approval conditions |
-| Operations | Repository-owned build/check/release/cleanup instructions and recovery procedure |
+| Operations | Repository-owned bump/dry-run/build/check/release/cleanup instructions and recovery procedures |
 
 Configuration MUST NOT contain secret values or duplicate the editable application version unnecessarily. Derived package versions, generated mirrors and authoritative version metadata MUST be labeled as such. Example schema versions describe project document shape, not application versions or standards editions.
 

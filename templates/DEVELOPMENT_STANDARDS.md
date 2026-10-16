@@ -19,11 +19,12 @@
 | Policy concept | Native implementation and authoritative location |
 | --- | --- |
 | Architecture, stack rationale, offline/privacy behavior and data export/backup/sync recovery | `<DOCUMENT_AND_APPLICABLE_SCOPE>` |
-| Application version, generated mirrors, next development core | `<PATH_FIELDS_AND_MAPPING>` |
+| Application version, declared development state and generated mirrors | `<PATH_FIELDS_AND_MAPPING>` |
+| Explicit version bump, dry-run, selective commit and recovery | `<DOCUMENT_AND_COMMANDS>` |
 | Compatibility surface and version-zero promises | `<DOCUMENT>` |
 | Build matrix by local/CI/beta/stable | `<CONFIG_OR_TABLE>` |
 | Local prerequisites, commands and dirty-source identity | `<DOCUMENT>` |
-| Artifact manifest, retention limit, dry-run/protection | `<DOCUMENT>` |
+| Artifact manifest, local counter scope/recovery, retention limit, dry-run/protection | `<DOCUMENT>` |
 | Git exclusions under the pinned ARTIFACTS.md policy | `<ROOT_GITIGNORE_AND_VALIDATION_EVIDENCE>` |
 | CI checks, PR revision and temporary retention | `<DOCUMENT>` |
 | Shared beta/stable reservation and publication coordination | `<DOCUMENT>` |
